@@ -1,0 +1,10 @@
+Flask-Cors
+Flask-QRcode
+PyQRCode
+flask_migrate
+pyzbar
+numba
+tensornetwork
+pennylane
+pennylane-sf
+matplotlib_venn
