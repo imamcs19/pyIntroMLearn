@@ -1,6 +1,6 @@
-# Koding Contoh MK Matematika Komputasi Semester Ganjil 2022/2023 Filkom UB
-# Rencana Pembelajaran MK Matematika Komputasi Semester Ganjil 2022/2023 Kelas C
-# Fakultas Ilmu Komputer (Filkom), Universitas Brawijaya (UB) 2022.
+# Koding Contoh MK Pengantar Pembelajaran Mesin (PPM) / Intro Machine Learning (Intro MLearn) Filkom UB
+# Rencana Pembelajaran MK Intro Machine Learning Semester Genap 2022/2023 Kelas B dan untuk lainnya
+# Fakultas Ilmu Komputer (Filkom), Universitas Brawijaya (UB) 2023.
 
 # Dosen Pengampu:
 # 1. Imam Cholissodin, S.Si., M.Kom. | email: imamcs@ub.ac.id | Filkom UB
@@ -78,7 +78,7 @@ app.secret_key = 'filkomub2223^&&*(&^(filkom#BJH#G#VB#MatKom99nDataPyICS_ap93825
 FrameWeb_atas = """
 {% extends "extends/base.html" %}
 {% block title %}
-    <title>Web App MatKom Dgn Python</title>
+    <title>Web App Project Dgn Python</title>
 {% endblock title %}
 {{ self.title() }}
     Home
@@ -86,10 +86,10 @@ FrameWeb_atas = """
 <button onclick="window.location.href='/'" class="btn btn-outline btn-rounded btn-info">
     <i class="ti-arrow-left m-l-5"></i>
     <span>Back Home</span>
-</button> Project 1
+</button> All Project 
 
 {{ self.title() }}
-    Project 1
+    All Project
 
 {% block content %}
 """
@@ -101,8 +101,8 @@ FrameWeb_bawah = """
 Z_z = FrameWeb_bawah
 
 # @app.route('/')
-# def hello_matkom():
-#     return 'Hello Students | Koding Matematika Komputasi (MatKom) pada Teknologi Cloud :D'
+# def hello_ppm():
+#     return 'Hello Students | Koding Pengantar Pembelajaran Mesin (PPM) pada Teknologi Cloud :D'
 
 @app.route('/contoh_exp_matrix', methods=['POST', 'GET'])
 def contoh_exp_matrix():
