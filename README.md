@@ -1,5 +1,5 @@
 # Koding Contoh MK Pengantar Pembelajaran Mesin (PPM) Semester Genap 2022/2023 Filkom UB
-Fakultas Ilmu Komputer (Filkom), Universitas Brawijaya (UB) 2022.
+Fakultas Ilmu Komputer (Filkom), Universitas Brawijaya (UB).
 
 Dosen Pengampu: 
 1. Imam Cholissodin, S.Si., M.Kom. | email: imamcs@ub.ac.id | Filkom UB
