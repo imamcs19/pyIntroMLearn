@@ -2796,7 +2796,8 @@ def myadmin(none_atau_lainnya=None):
             var2_in = request.form['teks_sintaks']
 
             # untuk mengkondisikan nama tabel tidak boleh ada spasi dan hanya a-z dan angka
-            # var1_in = var1_in.replace(" ","_").lower()
+            var1_in = " ".join(var1_in.split())
+            var1_in = var1_in.replace(" ","_").lower()
             filter_var1_in = "_1234567890abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
 
             getVals_base_filter_var1_in = list(filter(lambda x: x in filter_var1_in, var1_in))
