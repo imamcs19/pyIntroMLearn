@@ -13,6 +13,13 @@ datasets = {
     "Breast Cancer": load_breast_cancer()
 }
 
+# # Define multiple datasets to compare
+# datasets = {
+#     'iris': pd.read_csv('https://archive.ics.uci.edu/ml/machine-learning-databases/iris/iris.data', header=None),
+#     'wine': pd.read_csv('https://archive.ics.uci.edu/ml/machine-learning-databases/wine/wine.data', header=None),
+#     'breast_cancer': pd.read_csv('https://archive.ics.uci.edu/ml/machine-learning-databases/breast-cancer-wisconsin/wdbc.data', header=None),
+# }
+
 models = {
     "Logistic Regression": LogisticRegression(),
     "Random Forest": RandomForestClassifier()
