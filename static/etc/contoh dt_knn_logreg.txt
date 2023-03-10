@@ -18,10 +18,10 @@ models = {
     "Random Forest": RandomForestClassifier()
 }
 
-@app.route("/")
-def home():
+@app.route("/home_multiple_test")
+def home_multiple_test():
     template_string = """
-    <form method="post" action="/results">
+    <form method="post" action="/results_multiple_test">
         <label for="dataset">Select a dataset:</label>
         <select name="dataset" id="dataset">
             {% for dataset_name in datasets %}
@@ -41,8 +41,8 @@ def home():
     """
     return render_template_string(template_string, datasets=datasets.keys(), models=models.keys())
 
-@app.route("/results", methods=["POST"])
-def results():
+@app.route("/results_multiple_test", methods=["POST"])
+def results_multiple_test():
     dataset_name = request.form.get("dataset")
     model_name = request.form.get("model")
     dataset = datasets[dataset_name]
