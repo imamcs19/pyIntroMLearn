@@ -1,0 +1,79 @@
+from flask import Flask, render_template_string, request
+import pandas as pd
+from sklearn.model_selection import train_test_split
+from sklearn.metrics import accuracy_score
+from sklearn.tree import DecisionTreeClassifier
+from sklearn.neighbors import KNeighborsClassifier
+from sklearn.linear_model import LogisticRegression
+
+app = Flask(__name__)
+
+# Define multiple datasets to compare
+datasets = {
+    'iris': pd.read_csv('https://archive.ics.uci.edu/ml/machine-learning-databases/iris/iris.data', header=None),
+    'wine': pd.read_csv('https://archive.ics.uci.edu/ml/machine-learning-databases/wine/wine.data', header=None),
+    'breast_cancer': pd.read_csv('https://archive.ics.uci.edu/ml/machine-learning-databases/breast-cancer-wisconsin/wdbc.data', header=None),
+}
+
+# Define multiple machine learning models to compare
+models = {
+    'Decision Tree': DecisionTreeClassifier(),
+    'KNN': KNeighborsClassifier(),
+    'Logistic Regression': LogisticRegression(),
+}
+
+@app.route('/')
+def home():
+    return render_template_string('''
+    <h1>Classification Comparison</h1>
+    <form method="post">
+        <label for="dataset">Choose a dataset:</label>
+        <select name="dataset" id="dataset">
+            {% for dataset_name in datasets.keys() %}
+                <option value="{{ dataset_name }}">{{ dataset_name }}</option>
+            {% endfor %}
+        </select>
+        <br><br>
+        <label for="model">Choose a model:</label>
+        <select name="model" id="model">
+            {% for model_name in models.keys() %}
+                <option value="{{ model_name }}">{{ model_name }}</option>
+            {% endfor %}
+        </select>
+        <br><br>
+        <button type="submit">Submit</button>
+    </form>
+    ''')
+
+@app.route('/', methods=['POST'])
+def classify():
+    dataset_name = request.form['dataset']
+    model_name = request.form['model']
+    
+    # Load the selected dataset
+    dataset = datasets[dataset_name]
+    
+    # Split the dataset into training and testing sets
+    X_train, X_test, y_train, y_test = train_test_split(dataset.iloc[:, :-1], dataset.iloc[:, -1], test_size=0.2, random_state=0)
+    
+    # Fit the selected model on the training set
+    model = models[model_name]
+    model.fit(X_train, y_train)
+    
+    # Make predictions on the testing set and calculate accuracy
+    y_pred = model.predict(X_test)
+    accuracy = accuracy_score(y_test, y_pred)
+    
+    return render_template_string('''
+    <h1>Classification Comparison</h1>
+    <p>Dataset: {{ dataset_name }}</p>
+    <p>Model: {{ model_name }}</p>
+    <p>Accuracy: {{ accuracy }}</p>
+    <br>
+    <form method="get">
+        <button type="submit">Back</button>
+    </form>
+    ''', dataset_name=dataset_name, model_name=model_name, accuracy=accuracy)
+
+if __name__ == '__main__':
+    app.run(debug=True)
