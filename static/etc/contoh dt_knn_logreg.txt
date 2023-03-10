@@ -1,79 +1,71 @@
 from flask import Flask, render_template_string, request
-import pandas as pd
+from sklearn.datasets import load_iris, load_breast_cancer
 from sklearn.model_selection import train_test_split
-from sklearn.metrics import accuracy_score
-from sklearn.tree import DecisionTreeClassifier
-from sklearn.neighbors import KNeighborsClassifier
 from sklearn.linear_model import LogisticRegression
+from sklearn.ensemble import RandomForestClassifier
+from sklearn.metrics import accuracy_score
 
 app = Flask(__name__)
 
-# Define multiple datasets to compare
+# Define the datasets and models to use
 datasets = {
-    'iris': pd.read_csv('https://archive.ics.uci.edu/ml/machine-learning-databases/iris/iris.data', header=None),
-    'wine': pd.read_csv('https://archive.ics.uci.edu/ml/machine-learning-databases/wine/wine.data', header=None),
-    'breast_cancer': pd.read_csv('https://archive.ics.uci.edu/ml/machine-learning-databases/breast-cancer-wisconsin/wdbc.data', header=None),
+    "Iris": load_iris(),
+    "Breast Cancer": load_breast_cancer()
 }
 
-# Define multiple machine learning models to compare
 models = {
-    'Decision Tree': DecisionTreeClassifier(),
-    'KNN': KNeighborsClassifier(),
-    'Logistic Regression': LogisticRegression(),
+    "Logistic Regression": LogisticRegression(),
+    "Random Forest": RandomForestClassifier()
 }
 
-@app.route('/')
+@app.route("/")
 def home():
-    return render_template_string('''
-    <h1>Classification Comparison</h1>
-    <form method="post">
-        <label for="dataset">Choose a dataset:</label>
+    template_string = """
+    <form method="post" action="/results">
+        <label for="dataset">Select a dataset:</label>
         <select name="dataset" id="dataset">
-            {% for dataset_name in datasets.keys() %}
+            {% for dataset_name in datasets %}
                 <option value="{{ dataset_name }}">{{ dataset_name }}</option>
             {% endfor %}
         </select>
-        <br><br>
-        <label for="model">Choose a model:</label>
+        <br>
+        <label for="model">Select a model:</label>
         <select name="model" id="model">
-            {% for model_name in models.keys() %}
+            {% for model_name in models %}
                 <option value="{{ model_name }}">{{ model_name }}</option>
             {% endfor %}
         </select>
-        <br><br>
-        <button type="submit">Submit</button>
+        <br>
+        <input type="submit" value="Submit">
     </form>
-    ''')
+    """
+    return render_template_string(template_string, datasets=datasets.keys(), models=models.keys())
 
-@app.route('/', methods=['POST'])
-def classify():
-    dataset_name = request.form['dataset']
-    model_name = request.form['model']
-    
-    # Load the selected dataset
+@app.route("/results", methods=["POST"])
+def results():
+    dataset_name = request.form.get("dataset")
+    model_name = request.form.get("model")
     dataset = datasets[dataset_name]
+    model = models[model_name]
+    
+    # Load the dataset
+    X, y = dataset.data, dataset.target
     
     # Split the dataset into training and testing sets
-    X_train, X_test, y_train, y_test = train_test_split(dataset.iloc[:, :-1], dataset.iloc[:, -1], test_size=0.2, random_state=0)
+    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
     
-    # Fit the selected model on the training set
-    model = models[model_name]
+    # Fit the model on the training data
     model.fit(X_train, y_train)
     
-    # Make predictions on the testing set and calculate accuracy
+    # Evaluate the model on the testing data
     y_pred = model.predict(X_test)
     accuracy = accuracy_score(y_test, y_pred)
     
-    return render_template_string('''
-    <h1>Classification Comparison</h1>
-    <p>Dataset: {{ dataset_name }}</p>
-    <p>Model: {{ model_name }}</p>
+    template_string = """
+    <h2>Results for {{ dataset_name }} dataset and {{ model_name }} model:</h2>
     <p>Accuracy: {{ accuracy }}</p>
-    <br>
-    <form method="get">
-        <button type="submit">Back</button>
-    </form>
-    ''', dataset_name=dataset_name, model_name=model_name, accuracy=accuracy)
+    """
+    return render_template_string(template_string, dataset_name=dataset_name, model_name=model_name, accuracy=accuracy)
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     app.run(debug=True)
