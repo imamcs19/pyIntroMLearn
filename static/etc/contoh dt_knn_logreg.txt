@@ -5,7 +5,7 @@ from sklearn.linear_model import LogisticRegression
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.metrics import accuracy_score
 
-app = Flask(__name__)
+# app = Flask(__name__)
 
 # Define the datasets and models to use
 datasets = {
@@ -74,5 +74,5 @@ def results_multiple_test():
     """
     return render_template_string(template_string, dataset_name=dataset_name, model_name=model_name, accuracy=accuracy)
 
-if __name__ == "__main__":
-    app.run(debug=True)
+# if __name__ == "__main__":
+#    app.run(debug=True)
