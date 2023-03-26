@@ -64,7 +64,7 @@ import uuid
 
 CORS(app, resources=r'/api/*')
 
-app.secret_key = 'filkomub2223^&&*(&^(filkom#BJH#G#VB#MatKom99nDataPyICS_ap938255bnUB'
+app.secret_key = 'filkomub2223^&&*(&^(filkom#BJH#G#VB#MLearn99nDataPyICS_ap938255bnUB'
 
 # keterangan:
 # "#" adalah untuk comment
@@ -86,7 +86,7 @@ FrameWeb_atas = """
 <button onclick="window.location.href='/'" class="btn btn-outline btn-rounded btn-info">
     <i class="ti-arrow-left m-l-5"></i>
     <span>Back Home</span>
-</button> All Project 
+</button> All Project
 
 {{ self.title() }}
     All Project
@@ -2305,6 +2305,259 @@ def scanner():
 #   #
 #   pass
 
+@app.route('/code_anim_typewriter', methods=['GET'])
+def code_anim_typewriter():
+
+    template_view2 = '''
+        <!--- <html> --->
+        <!--- <head> --->
+        <!--- </head> --->
+        <head>
+        	<title>Typing Animation</title>
+        	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+        	<style>
+        		#text {
+        			border-right: 1px solid black;
+        			padding-right: 10px;
+        			white-space: pre-line; /* menampilkan new line */
+        		}
+        	</style>
+        </head>
+        <!--- <body> --->
+        <div id="text"></div>
+    	<script>
+    		var text = `Hello, world!
+                        How are you doing?
+                        I'm fine, thank you.`; // teks yang akan dianimasikan
+    		var i = 0;
+    		var speed = 100; // kecepatan animasi
+    		function typeWriter() {
+    			if (i < text.length) {
+    				document.getElementById("text").innerHTML += text.charAt(i);
+    				i++;
+    				setTimeout(typeWriter, speed);
+    			}
+    		}
+    		typeWriter();
+    	</script>
+
+        <!--- </body> --->
+        <!--- </html> --->
+    '''
+
+
+    template_view3 = '''
+    <!---  <!DOCTYPE html> --->
+    <!--- <html> --->
+    <!--- <head> --->
+    <!---	<title>TypeWriter Animation</title> --->
+    <!---	<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style.css') }}"> --->
+    <!---</head> --->
+
+    <head>
+    	<title>Typing Animation</title>
+    	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    	<style>
+    		#text {
+    			border-right: 1px solid black;
+    			padding-right: 10px;
+    			white-space: pre-line; /* menampilkan new line */
+
+    		}
+    		h1 {
+    		    overflow: hidden;
+    			border-right: 0.15em solid #333;
+    		}
+    	</style>
+    </head>
+    <!---<body> --->
+    	<div class="typewriter-container">
+    		<h1 class="typewriter" id="typewriter"></h1>
+    	</div>
+    	<button onclick="copyCode()">Copy Code</button>
+    	<script>
+    		//var text = "Ini adalah teks yang akan dianimasikan."; // teks yang akan dianimasikan
+    		var text = `Ini adalah teks yang akan dianimasikan.
+                        Hello, world!
+                        How are you doing?
+                        I'm fine, thank you.`;
+    		var i = 0;
+    		var speed = 100; // kecepatan animasi
+    		function typeWriter() {
+    			if (i < text.length) {
+    				document.getElementById("typewriter").innerHTML += text.charAt(i);
+    				i++;
+    				setTimeout(typeWriter, speed);
+    			}
+    		}
+    		typeWriter();
+
+    		function copyCode() {
+    			var code = document.getElementById("typewriter").innerHTML;
+    			navigator.clipboard.writeText(code);
+    			alert("Code has been copied!");
+    		}
+    	</script>
+    <!--- </body> --->
+    <!--- </html> --->
+    '''
+
+
+    return render_template_string(A_a+template_view3+Z_z)
+
+@app.route('/pca')
+def pca():
+    # load dataset
+    # with open('data.csv', 'r') as file:
+    #     reader = csv.reader(file)
+    #     data = [list(map(float, row)) for row in reader]
+
+    # example 2D dataset
+    # X 2D dan Y 1D
+    dataXY = [
+        [3.5, 1.3, 0],
+        [3.0, 1.5, 0],
+        [2.0, 1.0, 1],
+        [0.5, 2.0, 1],
+        [1.5, 1.8, 1],
+        [4.5, 0.5, 0],
+        [4.0, 0.7, 0],
+        [4.5, 1.0, 0],
+        [5.0, 1.1, 0],
+        [5.5, 0.8, 0],
+        [1.5, 2.5, 1],
+        [2.5, 2.0, 1],
+        [1.8, 3.0, 1],
+        [3.5, 2.5, 0],
+        [4.5, 2.5, 0]
+    ]
+
+    data = [
+        [7, 7, 3],
+        [8, 2, 0],
+        [7, 7, 1],
+        [4, 0, 8]
+    ]
+
+    # hitung mean
+    n = len(data)
+    mean = [sum([data[i][j] for i in range(n)]) / n for j in range(len(data[0]))]
+
+    # hitung covariance matrix
+    cov = [[0 for j in range(len(data[0]))] for i in range(len(data[0]))]
+    for i in range(n):
+        for j in range(len(data[0])):
+            for k in range(len(data[0])):
+                cov[j][k] += (data[i][j] - mean[j]) * (data[i][k] - mean[k])
+    for j in range(len(data[0])):
+        for k in range(len(data[0])):
+            cov[j][k] /= (n - 1)
+
+    # hitung eigenvalue dan eigenvector
+    eigenvalues, eigenvectors = [], []
+    for i in range(len(cov)):
+        eigenvalue, eigenvector = 0, []
+        for j in range(len(cov)):
+            eigenvalue += cov[i][j] * cov[j][i]
+            eigenvector.append(cov[j][i])
+        eigenvalues.append(eigenvalue)
+        eigenvectors.append(eigenvector)
+    norm = sum(eigenvalues) ** 0.5
+    eigenvalues = [eigenvalue / norm for eigenvalue in eigenvalues]
+    eigenvectors = [[eigenvectors[j][i] / norm for i in range(len(eigenvectors[j]))] for j in range(len(eigenvectors))]
+
+    # urutkan eigenvalue dan eigenvector berdasarkan eigenvalue tertinggi
+    eigenvectors = [x for _, x in sorted(zip(eigenvalues, eigenvectors), reverse=True)]
+    eigenvalues = sorted(eigenvalues, reverse=True)
+
+    # reduksi dimensi
+    k = 2 # jumlah dimensi baru yang diinginkan
+    projection_matrix = [eigenvectors[i][:k] for i in range(k)]
+    reduced_data = [[sum([data[i][j] * projection_matrix[j][k] for j in range(k)]) for k in range(k)] for i in range(n)]
+
+    template_view = '''
+    <!DOCTYPE html>
+    <html>
+    <head>
+    	<title>Plotly Example</title>
+    	<script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+    </head>
+    <body>
+    	<div id="plot"></div>
+    	<script>
+    		//var data = [{"x": [1, 2, 3, 4, 5], "y": [2, 4, 1, 3, 5]}, {"x": [1, 2, 3, 4, 5], "y": [5, 3, 1, 4, 2]}];
+    		var data = {{ data | tojson }};
+    		var traces = data.map(function(row) {
+    			return {
+    				x: row.x,
+    				y: row.y,
+    				type: 'scatter'
+    			};
+    		});
+    		var layout = {
+    			title: 'Plotly Example',
+    			xaxis: {
+    				title: 'X Axis'
+    			},
+    			yaxis: {
+    				title: 'Y Axis'
+    			}
+    		};
+    		Plotly.newPlot('plot', traces, layout);
+    	</script>
+    </body>
+    </html>
+    '''
+
+    # return render_template('pca.html', data=reduced_data)
+    return render_template_string(template_view, data=reduced_data)
+
+@app.route('/pca2')
+def pca2():
+    # generate dummy data
+    data = pd.DataFrame({
+        'x1': np.random.normal(0, 1, 100),
+        'x2': np.random.normal(0, 1, 100),
+        'x3': np.random.normal(0, 1, 100)
+    })
+
+    # center and scale the data
+    data_centered = data - data.mean()
+    data_scaled = data_centered / data_centered.std()
+
+    # calculate the covariance matrix
+    covariance_matrix = np.cov(data_scaled.T)
+
+    # calculate the eigenvalues and eigenvectors
+    eigenvalues, eigenvectors = np.linalg.eig(covariance_matrix)
+
+    # sort the eigenvalues and eigenvectors by descending order of eigenvalues
+    eigenvectors = eigenvectors[:, np.argsort(eigenvalues)[::-1]]
+    eigenvalues = eigenvalues[np.argsort(eigenvalues)[::-1]]
+
+    # calculate the explained variance ratio
+    explained_variance_ratio = eigenvalues / np.sum(eigenvalues)
+
+    # calculate the cumulative explained variance ratio
+    cumulative_explained_variance_ratio = np.cumsum(explained_variance_ratio)
+
+    # transform the data using the first two principal components
+    transformed_data = np.dot(data_scaled, eigenvectors[:, :2])
+
+    # create a new DataFrame with the transformed data and add a label column
+    pca_data = pd.DataFrame({
+        'PC1': transformed_data[:, 0],
+        'PC2': transformed_data[:, 1],
+        'label': np.random.choice(['A', 'B'], size=100)
+    })
+
+    # convert the DataFrame to a JSON object
+    pca_data_json = pca_data.to_json(orient='records')
+
+    # render the HTML template with the PCA data
+    return render_template('pca2.html', pca_data=pca_data_json)
+
+
 @app.route('/myadmin/', methods = ['GET','POST'])
 @app.route('/myadmin/<none_atau_lainnya>', methods = ['GET','POST'])
 def myadmin(none_atau_lainnya=None):
@@ -2791,7 +3044,7 @@ def myadmin(none_atau_lainnya=None):
         # return str_info
 
         if request.method == 'POST': # dioperasikan dihalaman sendiri tanpa send ke route lain, misal /myadmin
-            
+
             var1_in = request.form['nama_tabel']
             var2_in = request.form['teks_sintaks']
 
@@ -2910,3 +3163,376 @@ def myadmin(none_atau_lainnya=None):
 @app.route('/launchpad_menu')
 def launchpad_menu():
    return render_template("launchpad_menu.html")
+
+@app.route("/preproses_data", methods=["POST","GET"])
+def preproses_data():
+    # Ref:
+    # [0] https://towardsdatascience.com/feature-engineering-for-machine-learning-3a5e293a5114
+    # [1] https://machinelearningmastery.com/discover-feature-engineering-how-to-engineer-features-and-how-to-get-good-at-it/
+
+    template_string = """
+    <form method="post" action="/results_multiple_test">
+        <label for="dataset">Select a dataset:</label>
+        <select name="dataset" id="dataset">
+            {% for dataset_name in datasets %}
+                <option value="{{ dataset_name }}">{{ dataset_name }}</option>
+            {% endfor %}
+        </select>
+        <br>
+        <label for="model">Select a model:</label>
+        <select name="model" id="model">
+            {% for model_name in models %}
+                <option value="{{ model_name }}">{{ model_name }}</option>
+            {% endfor %}
+        </select>
+        <br>
+        <input type="submit" value="Submit">
+    </form>
+    """
+    return render_template_string(template_string, datasets=datasets.keys(), models=models.keys())
+
+@app.route('/preproses_imputation_replace_with_mean')
+def preproses_imputation_replace_with_mean():
+    import numpy as np
+
+    # Define a sample data array with missing values represented by various types
+    data = np.array([
+        [1.0, 2.0, np.nan],
+        [4.0, '', 6.0],
+        [None, 8.0, 9.0]
+    ], dtype=object)
+
+    # Replace any missing values (nan, empty, none) with the mean of the column
+    data[data == ''] = np.nan
+    data[data == None] = np.nan
+
+    # Replace any missing values with the mean of the column
+    col_means = np.nanmean(data, axis=0)
+    inds = np.where(np.isnan(data.astype(float)))
+    # if inds[0].any():
+    #     data[inds] = np.take(col_means, inds[1])
+    data[inds] = np.take(col_means, inds[1])
+
+    # # Render the imputed data as a responsive HTML table using Bootstrap
+    # table = '<div class="table-responsive"><table class="table table-striped">'
+    # # Add table header row
+    # table += '<thead><tr>'
+    # for col in range(data.shape[1]):
+    #     table += '<th>Column {}</th>'.format(col + 1)
+    # table += '</tr></thead>'
+    # # Add table body rows
+    # table += '<tbody>'
+    # for row in data:
+    #     table += '<tr>'
+    #     for val in row:
+    #         table += '<td>{}</td>'.format(val)
+    #     table += '</tr>'
+    # table += '</tbody></table></div>'
+    # return render_template_string(A_a+table+Z_z)
+
+    # Get row and column names
+    row_names = ['Row {}'.format(i+1) for i in range(data.shape[0])]
+    col_names = ['Column {}'.format(i+1) for i in range(data.shape[1])]
+
+    # Render the imputed data as a responsive HTML table using Bootstrap
+    table_html = '<div class="table-responsive"><table class="table"><thead><tr><th></th>'
+    for col_name in col_names:
+        table_html += '<th>{}</th>'.format(col_name)
+    table_html += '</tr></thead><tbody>'
+    for i in range(data.shape[0]):
+        table_html += '<tr><th>{}</th>'.format(row_names[i])
+        for j in range(data.shape[1]):
+            table_html += '<td>{:.2f}</td>'.format(data[i,j])
+        table_html += '</tr>'
+    table_html += '</tbody></table></div>'
+
+    # Render the HTML template with the table
+    html = render_template_string(A_a+table_html+Z_z)
+
+    return html
+
+@app.route('/preproses_imputation_drop_col_row')
+def preproses_imputation_drop_col_row():
+    import numpy as np
+    data = np.array([[1, 2, np.nan, 4],
+                [5, 6, 7, 8],
+                [9, np.nan, 11, 12],
+                [np.nan, 14, 15, np.inf],
+                [2, 0, 1, 19],
+                ['', 'abc', None, 1]])
+
+    data[data == data.astype(str)] = np.nan
+    data[data == None] = np.nan
+    data[data == np.inf] = np.nan
+
+    # print(data)
+    # print()
+
+    # ini prioritas di-remove dari by baris dulu lalu baru by kolom
+    # --------------------------------------------------------------
+    # drop rows with missing values
+    data = data[~np.isnan(data.astype(float)).any(axis=1)]
+
+    # drop columns with missing values
+    data = data[:, ~np.isnan(data.astype(float)).any(axis=0)]
+
+    # create HTML table
+    table = "<table class='table table-responsive'>"
+    # create header row
+    table += "<thead><tr><th></th>"
+    for i in range(data.shape[1]):
+        table += f"<th>Column {i+1}</th>"
+    table += "</tr></thead>"
+    # create data rows
+    table += "<tbody>"
+    for i in range(data.shape[0]):
+        table += f"<tr><th>Row {i+1}</th>"
+        for j in range(data.shape[1]):
+            table += f"<td>{data[i,j]}</td>"
+        table += "</tr>"
+    table += "</tbody></table>"
+
+    # render HTML template with table
+    return render_template_string(A_a+table+Z_z)
+
+@app.route('/preproses_imputation_drop_col_row_base_threshold')
+def preproses_imputation_drop_col_row_base_threshold():
+    # from sklearn.preprocessing import Imputer
+    import numpy as np
+    # # sample data with missing values
+    data = np.array([[1, 2, np.nan, 4],
+                [np.nan, np.nan, 10, ""],
+                [9, np.nan, 11, 12],
+                [15, 6, None, 0],
+                [np.nan, 14, 15, np.inf],
+                [2, 0, 1, 19],
+                [5, 0, "", 18],
+                [25, 5, None, 1],
+                [25, 5, np.nan, 1],
+                [25, 5, np.nan, 1],
+                [25, 5, np.nan, 1],
+                [np.nan, np.inf, np.nan, ""],
+                [25, 5, "", 1],
+                ['', 'abc', None, 1]])
+
+    data[data == data.astype(str)] = np.nan
+    data[data == None] = np.nan
+    data[data == np.inf] = np.nan
+
+    # drop columns, misal yang mengandung > 70% missing values per kolomnya
+    col_threshold = data.shape[0] * 0.7
+    col_mask = np.isnan(data.astype(float)).sum(axis=0) > col_threshold
+    data_without_cols_missing_value_higher_than_threshold = data[:, ~col_mask]
+    # print('col_threshold = ', col_threshold)
+    # print('col_mask = ', col_mask)
+    # print(data_without_cols_missing_value_higher_than_threshold)
+
+    # # drop rows with missing values, misal yang mengandung > 70% missing values per barisnya
+    row_threshold = data_without_cols_missing_value_higher_than_threshold.shape[1] * 0.7
+    row_mask = np.isnan(data_without_cols_missing_value_higher_than_threshold.astype(float)).sum(axis=1) > row_threshold
+    data_without_col_row_missing_value_higher_than_threshold = data_without_cols_missing_value_higher_than_threshold[~row_mask]
+    # print('row_threshold = ', row_threshold)
+    # print('row_mask = ', row_mask)
+    # print(data_without_col_row_missing_value_higher_than_threshold)
+
+    # print()
+    data = data_without_col_row_missing_value_higher_than_threshold.copy()
+
+    # # Replace any missing values with the mean of the column
+    # col_means = np.nanmean(data, axis=0)
+    # inds = np.where(np.isnan(data.astype(float)))
+    # data[inds] = np.take(col_means, inds[1])
+    # print(data)
+
+    # # Replace dengan nilai nol
+    # data[np.isnan(data.astype(float))] = 0
+    # print(data)
+
+    # # Replace any missing values with the median of the column
+    # col_median = np.median(data, axis=0)
+    # inds = np.where(np.isnan(data.astype(float)))
+    # data[inds] = np.take(col_median, inds[1])
+    # print(data)
+
+    # Replace any missing values with the mode of the column
+    # Function to calculate the mode of a 1D array
+    def calculate_mode(arr_1d):
+        values, counts = np.unique(arr_1d, return_counts=True)
+        max_count_index = np.argmax(counts)
+        return values[max_count_index]
+
+    # Calculate the mode of each column
+    def mymodes(arr):
+      modes = []
+      for col in range(arr.shape[1]):
+          mode_col = calculate_mode(arr[:, col])
+          modes.append(mode_col)
+      return np.array(modes)
+
+    col_mode = mymodes(data)
+    inds = np.where(np.isnan(data.astype(float)))
+    data[inds] = np.take(col_mode, inds[1])
+    # print(data)
+
+    # create HTML table
+    table = "<table class='table table-responsive'>"
+    # create header row
+    table += "<thead><tr><th></th>"
+    for i in range(data.shape[1]):
+        table += f"<th>Column {i+1}</th>"
+    table += "</tr></thead>"
+    # create data rows
+    table += "<tbody>"
+    for i in range(data.shape[0]):
+        table += f"<tr><th>Row {i+1}</th>"
+        for j in range(data.shape[1]):
+            table += f"<td>{data[i,j]}</td>"
+        table += "</tr>"
+    table += "</tbody></table>"
+
+    # render HTML template with table
+    return render_template_string(A_a+table+Z_z)
+
+from flask import Flask, render_template_string, request
+from sklearn.datasets import load_iris, load_breast_cancer
+from sklearn.model_selection import train_test_split
+from sklearn.linear_model import LogisticRegression
+from sklearn.ensemble import RandomForestClassifier
+from sklearn.metrics import accuracy_score
+
+# Define the datasets and models to use => minimal 10 macam dataset, coba ambil dari UCI (https://archive-beta.ics.uci.edu/) atau lainnya
+datasets = {
+    "Iris": load_iris(),
+    "Breast Cancer": load_breast_cancer()
+}
+
+# gunakan nb, knn dan dt
+models = {
+    "Logistic Regression": LogisticRegression(),
+    "Random Forest": RandomForestClassifier()
+}
+
+@app.route("/home_multiple_test")
+def home_multiple_test():
+    template_string = """
+    <form method="post" action="/results_multiple_test">
+        <label for="dataset">Select a dataset:</label>
+        <select name="dataset" id="dataset">
+            {% for dataset_name in datasets %}
+                <option value="{{ dataset_name }}">{{ dataset_name }}</option>
+            {% endfor %}
+        </select>
+        <br>
+        <label for="model">Select a model:</label>
+        <select name="model" id="model">
+            {% for model_name in models %}
+                <option value="{{ model_name }}">{{ model_name }}</option>
+            {% endfor %}
+        </select>
+        <br>
+        <input type="submit" value="Submit">
+    </form>
+    """
+    return render_template_string(template_string, datasets=datasets.keys(), models=models.keys())
+
+@app.route("/results_multiple_test", methods=["POST"])
+def results_multiple_test():
+    dataset_name = request.form.get("dataset")
+    model_name = request.form.get("model")
+    dataset = datasets[dataset_name]
+    model = models[model_name]
+
+    # Load the dataset
+    X, y = dataset.data, dataset.target
+
+    # Split the dataset into training and testing sets
+    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+
+    # Fit the model on the training data
+    model.fit(X_train, y_train)
+
+    # Evaluate the model on the testing data
+    y_pred = model.predict(X_test)
+    accuracy = accuracy_score(y_test, y_pred)
+
+    template_string = """
+    <h2>Results for {{ dataset_name }} dataset and {{ model_name }} model:</h2>
+    <p>Accuracy: {{ accuracy }}</p>
+    """
+    return render_template_string(template_string, dataset_name=dataset_name, model_name=model_name, accuracy=accuracy)
+
+# from flask import Flask, render_template_string, request
+# import pandas as pd
+# from sklearn.model_selection import train_test_split
+# from sklearn.metrics import accuracy_score
+# from sklearn.tree import DecisionTreeClassifier
+# from sklearn.neighbors import KNeighborsClassifier
+# from sklearn.linear_model import LogisticRegression
+
+# # Define multiple datasets to compare
+# datasets = {
+#     'iris': pd.read_csv('https://archive.ics.uci.edu/ml/machine-learning-databases/iris/iris.data', header=None),
+#     'wine': pd.read_csv('https://archive.ics.uci.edu/ml/machine-learning-databases/wine/wine.data', header=None),
+#     'breast_cancer': pd.read_csv('https://archive.ics.uci.edu/ml/machine-learning-databases/breast-cancer-wisconsin/wdbc.data', header=None),
+# }
+
+# # Define multiple machine learning models to compare
+# models = {
+#     'Decision Tree': DecisionTreeClassifier(),
+#     'KNN': KNeighborsClassifier(),
+#     'Logistic Regression': LogisticRegression(),
+# }
+
+# @app.route('/home_classify_dt_knn_reglog')
+# def home_classify_dt_knn_reglog():
+#     return render_template_string('''
+#     <h1>Classification Comparison</h1>
+#     <form method="post">
+#         <label for="dataset">Choose a dataset:</label>
+#         <select name="dataset" id="dataset">
+#             {% for dataset_name in datasets.keys() %}
+#                 <option value="{{ dataset_name }}">{{ dataset_name }}</option>
+#             {% endfor %}
+#         </select>
+#         <br><br>
+#         <label for="model">Choose a model:</label>
+#         <select name="model" id="model">
+#             {% for model_name in models.keys() %}
+#                 <option value="{{ model_name }}">{{ model_name }}</option>
+#             {% endfor %}
+#         </select>
+#         <br><br>
+#         <button type="submit">Submit</button>
+#     </form>
+#     ''')
+
+# @app.route('/classify_dt_knn_reglog', methods=['POST'])
+# def classify_dt_knn_reglog():
+#     dataset_name = request.form['dataset']
+#     model_name = request.form['model']
+
+#     # Load the selected dataset
+#     dataset = datasets[dataset_name]
+
+#     # Split the dataset into training and testing sets
+#     X_train, X_test, y_train, y_test = train_test_split(dataset.iloc[:, :-1], dataset.iloc[:, -1], test_size=0.2, random_state=0)
+
+#     # Fit the selected model on the training set
+#     model = models[model_name]
+#     model.fit(X_train, y_train)
+
+#     # Make predictions on the testing set and calculate accuracy
+#     y_pred = model.predict(X_test)
+#     accuracy = accuracy_score(y_test, y_pred)
+
+#     return render_template_string('''
+#     <h1>Classification Comparison</h1>
+#     <p>Dataset: {{ dataset_name }}</p>
+#     <p>Model: {{ model_name }}</p>
+#     <p>Accuracy: {{ accuracy }}</p>
+#     <br>
+#     <form method="get">
+#         <button type="submit">Back</button>
+#     </form>
+#     ''', dataset_name=dataset_name, model_name=model_name, accuracy=accuracy)
+
