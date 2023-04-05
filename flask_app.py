@@ -3164,33 +3164,10 @@ def myadmin(none_atau_lainnya=None):
 def launchpad_menu():
    return render_template("launchpad_menu.html")
 
-@app.route("/preproses_data", methods=["POST","GET"])
-def preproses_data():
-    # Ref:
+# Ref. preproses:
     # [0] https://towardsdatascience.com/feature-engineering-for-machine-learning-3a5e293a5114
     # [1] https://machinelearningmastery.com/discover-feature-engineering-how-to-engineer-features-and-how-to-get-good-at-it/
-
-    template_string = """
-    <form method="post" action="/results_multiple_test">
-        <label for="dataset">Select a dataset:</label>
-        <select name="dataset" id="dataset">
-            {% for dataset_name in datasets %}
-                <option value="{{ dataset_name }}">{{ dataset_name }}</option>
-            {% endfor %}
-        </select>
-        <br>
-        <label for="model">Select a model:</label>
-        <select name="model" id="model">
-            {% for model_name in models %}
-                <option value="{{ model_name }}">{{ model_name }}</option>
-            {% endfor %}
-        </select>
-        <br>
-        <input type="submit" value="Submit">
-    </form>
-    """
-    return render_template_string(template_string, datasets=datasets.keys(), models=models.keys())
-
+    
 @app.route('/preproses_imputation_replace_with_mean')
 def preproses_imputation_replace_with_mean():
     import numpy as np
