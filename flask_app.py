@@ -3437,6 +3437,44 @@ def results_multiple_test():
     <p>Accuracy: {{ accuracy }}</p>
     """
     return render_template_string(template_string, dataset_name=dataset_name, model_name=model_name, accuracy=accuracy)
+    
+@app.route('/gen_page_tanpa_db_frontend_backend', methods = ['GET','POST'])
+def gen_page_tanpa_db_frontend_backend():
+    # Set nilai jumlah field yang di-generate
+    num_comp_inputs = 2
+    num_comp_textareas = 1
+    num_comp_hidden_fields = 1
+    num_comp_file_fields = 1
+
+    # siapkan template kode untuk setiap field
+    comp_input_template = '<div class="form-group"><label for="input{{ num }}">Input {{ num }}:</label><input type="text" class="form-control" id="input{{ num }}"></div>'
+    comp_textarea_template = '<div class="form-group"><label for="textarea{{ num }}">Textarea {{ num }}:</label><textarea class="form-control" id="textarea{{ num }}"></textarea></div>'
+    comp_hidden_template = '<div class="form-group"><input type="hidden" class="form-control" id="hidden{{ num }}"></div>'
+    comp_file_template = '<div class="form-group"><label for="file{{ num }}">File {{ num }}:</label><input type="file" class="form-control-file" id="file{{ num }}"></div>'
+
+    # generate kode / sintaks html menggunakan list comprehension
+    comp_input_fields = ''.join([render_template_string(comp_input_template, num=i) for i in range(1, num_comp_inputs+1)])
+    comp_textarea_fields = ''.join([render_template_string(comp_textarea_template, num=i) for i in range(1, num_comp_textareas+1)])
+    comp_hidden_fields = ''.join([render_template_string(comp_hidden_template, num=i) for i in range(1, num_comp_hidden_fields+1)])
+    comp_file_fields = ''.join([render_template_string(comp_file_template, num=i) for i in range(1, num_comp_file_fields+1)])
+
+    # concate semua kode / sintaks html
+    my_final_fields_gen_in = comp_input_fields + comp_textarea_fields + comp_hidden_fields + comp_file_fields
+
+    # menyiapkan HTML template string untuk ditampilkan hasilnya, jgn lupa gunakan "autoescape"
+    html_template_string = '''
+        <div class="container">
+            <h1>Prototipe Ai Virtual Programmer Berbasis Web</h1>
+            <form action="/gen_page_tanpa_db_frontend_backend" method="POST">
+                {% autoescape off %}
+                {{ fields_to_html_template_string }}
+                {% endautoescape %}
+                <button type="submit" class="btn btn-primary">Kirim</button>
+            </form>
+        </div>
+    '''
+
+    return render_template_string(A_a+html_template_string+Z_z, fields_to_html_template_string = my_final_fields_gen_in)
 
 # from flask import Flask, render_template_string, request
 # import pandas as pd
